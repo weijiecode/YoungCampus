@@ -1,4 +1,6 @@
 <template>
+<div class="login">
+  <!-- 登录 -->
   <div class="login_container">
     <div class="login_all">
       <div class="login_pic">
@@ -30,29 +32,95 @@
               </el-input> -->
               <el-input placeholder="请输入密码" v-model="loginForm.password" show-password></el-input>
           </el-form-item>
-          <el-link class="login_reg">立即注册<i class="el-icon-s-promotion el-icon--right"></i> </el-link>
+          <el-link class="login_reg" @click="regDialogVisible = true">立即注册<i class="el-icon-s-promotion el-icon--right"></i> </el-link>
           <el-form-item class="btns">
-            <el-button type="primary" @click="login" round >登录</el-button>
+            <el-button type="primary" @click="login" round>登录</el-button>
             <el-button type="info" @click="resetLoginForm" round>重置</el-button>
           </el-form-item>
         </el-form>
       </div>
     </div>
   </div>
+  <!-- 注册 -->
+  <el-dialog
+  title="注册"
+  :visible.sync="regDialogVisible"
+  width="50%"
+  center>
+  <el-form :model="regForm" status-icon :rules="regFormRules" ref="regFormRef" label-width="100px" class="reg_form">
+  <el-form-item label="账号" prop="reg_username" class="is-required">
+    <el-input v-model="regForm.reg_username" autocomplete="off"></el-input>
+  </el-form-item>
+  <el-form-item label="密码" prop="reg_password" class="is-required">
+    <el-input type="password" v-model="regForm.reg_password" autocomplete="off"></el-input>
+  </el-form-item>
+  <el-form-item label="确认密码" prop="reg_checkPassword" class="is-required">
+    <el-input type="password" v-model="regForm.reg_checkPassword" autocomplete="off"></el-input>
+  </el-form-item>
+  <!-- <el-form-item label="年龄" prop="age">
+    <el-input v-model.number="ruleForm.age"></el-input>
+  </el-form-item> -->
+<el-collapse>
+  <el-collapse-item title="展开更多（非必填选项）" name="1">
+    <el-form-item label="手机号码" prop="reg_phone">
+      <el-input v-model="regForm.reg_checkPassword" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="邮箱" prop="reg_email">
+      <el-input v-model="regForm.reg_checkPassword" autocomplete="off"></el-input>
+    </el-form-item>
+  </el-collapse-item>
+</el-collapse>
+</el-form>
+  <span slot="footer" class="dialog-footer">
+    <!-- <el-button @click="regDialogVisible = false">取 消</el-button> -->
+    <el-button type="primary" @click="register">注 册</el-button>
+  </span>
+</el-dialog>
+</div>
 </template>
 
 <script>
 import Qs from "qs";
 export default {
   data() {
+      // 注册两次密码验证
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          if (this.regForm.reg_checkPassword !== '') {
+            this.$refs.regFormRef.validateField('reg_checkPassword');
+          }
+          callback();
+        }
+      };
+      var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.regForm.reg_password) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      };
     return {
+      // 注册页面的dialog
+      regDialogVisible: false,
+      // 登录表单
       loginForm: {
         username: "",
         password: "",
       },
+      // 注册表单
+      regForm: {
+        reg_username: "",
+        reg_password: "",
+        reg_checkPassword: ""
+      },
+      // 登录表单规则
       loginFormRules: {
         username: [
-          { require: true, message: "请输入登录名称", trigger: "blur" },
+          { required: true, message: "请输入登录名称", trigger: "blur" },
           {
             min: 3,
             max: 10,
@@ -61,7 +129,37 @@ export default {
           },
         ],
         password: [
-          { require: true, message: "请输入登录密码", trigger: "blur" },
+          { required: true, message: "请输入登录密码", trigger: "blur" },
+          {
+            min: 6,
+            max: 15,
+            message: "长度在 6 到 15 个字符",
+            trigger: "blur",
+          },
+        ],
+      },
+      // 注册表单规则
+      regFormRules: {
+        reg_username: [
+          { required: true, message: "请输入注册名称", trigger: "blur" },
+          {
+            min: 3,
+            max: 10,
+            message: "长度在 3 到 10 个字符",
+            trigger: "blur",
+          },
+        ],
+        reg_password: [
+          { validator: validatePass, trigger: "blur" },
+          {
+            min: 6,
+            max: 15,
+            message: "长度在 6 到 15 个字符",
+            trigger: "blur",
+          },
+        ],
+        reg_checkPassword: [
+          { validator: validatePass2, trigger: "blur" },
           {
             min: 6,
             max: 15,
@@ -80,7 +178,7 @@ export default {
     login() {
       this.$refs.loginFormRef.validate(async (valid) => {
         if (!valid) return;
-        console.log("6666666");
+        console.log("login_log");
         console.log(this.loginForm.username);
         console.log(this.loginForm.password);
         // let formData = new FormData;
@@ -97,13 +195,33 @@ export default {
         console.log(res);
       });
     },
+    register() {
+      this.regDialogVisible = false
+        this.$refs.regFormRef.validate(async (valid) => {
+        if (!valid) return;
+        console.log("reg_log");
+        console.log(this.regForm.reg_username);
+        console.log(this.regForm.reg_password);
+        // let formData = new FormData;
+        // formData.append("reg_username", this.regForm.reg_username);
+        // formData.append("password", this.regForm.password);
+        console.log(Qs.stringify(this.regForm));
+        const { data: res } = await this.$http.post(
+          "register",
+          Qs.stringify(this.regForm)
+        );
+        console.log(res);
+        if (res.code !== 200) return this.$message.error("注册失败，请重试！");
+        this.$message.success("注册成功！");
+        console.log(res);
+      });
+    },
   },
 };
 </script>
 
 <style scoped>
-.login_container {
-
+.login {
   background-color: #e2d3fe;
   height: 100%;
   width: 100%;
@@ -166,5 +284,9 @@ export default {
 .el-button--primary:focus{
  background-color: #8a68d3;
  border-color: #8a68d3;
+}
+.reg_form {
+  width: 70%;
+  margin: 0 auto;
 }
 </style>
