@@ -189,10 +189,11 @@ export default {
           "login",
           Qs.stringify(this.loginForm)
         );
-        console.log(res);
         if (res.code !== 200) return this.$message.error("账号或密码错误!");
         this.$message.success("登录成功！");
-        console.log(res);
+        window.sessionStorage.setItem('token',res.token)
+        this.$router.push('home')
+        console.log(res.token);
       });
     },
     register() {
@@ -289,4 +290,5 @@ export default {
   width: 70%;
   margin: 0 auto;
 }
+
 </style>

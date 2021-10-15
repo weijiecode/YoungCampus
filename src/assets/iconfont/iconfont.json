@@ -1,0 +1,16 @@
+{
+  "id": "2858089",
+  "name": "youngcampus",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "9836870",
+      "name": "校园",
+      "font_class": "xiaoyuan",
+      "unicode": "e655",
+      "unicode_decimal": 58965
+    }
+  ]
+}
