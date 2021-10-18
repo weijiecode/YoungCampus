@@ -40,6 +40,11 @@ const routes = [
   // }
 ]
 
+
+
+
+
+
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -52,9 +57,10 @@ router.beforeEach((to, from, next) => {
   // from代表哪个路径跳转过来的
   // next是一个函数表示放行
   // next（）放行 next（'/logn'）强制跳转
+  
   if (to.path === '/login') return next(); // 如果是login页面直接放行
   // 获取token
-  const tokenStr = window.sessionStorage.getItem('token')
+  const tokenStr = sessionStorage.getItem('token')
   if (!tokenStr) return next('/login')
   next()
 

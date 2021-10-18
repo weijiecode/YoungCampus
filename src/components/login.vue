@@ -1,108 +1,137 @@
 <template>
-<div class="login">
-  <!-- 登录 -->
-  <div class="login_container">
-    <div class="login_all">
-      <div class="login_pic">
-          <img src="../assets/picture/login1.png" alt="">
-      </div>
-      <div class="login_box">
+  <div class="login">
+    <!-- 登录 -->
+    <div class="login_container">
+      <div class="login_all">
+        <div class="login_pic">
+          <img src="../assets/picture/login1.png" alt="" />
+        </div>
+        <div class="login_box">
           <p class="login_p">登录</p>
-        <el-form
-          ref="loginFormRef"
-          :model="loginForm"
-          :rules="loginFormRules"
-          label-width="0px"
-          class="login_form"
-        >
-          <el-form-item prop="username">
-            <el-input
-              placeholder="请输入用户名"
-              v-model="loginForm.username"
-            >
-              <!-- <template slot="prepend">账号：</template> -->
+          <el-form
+            ref="loginFormRef"
+            :model="loginForm"
+            :rules="loginFormRules"
+            label-width="0px"
+            class="login_form"
+          >
+            <el-form-item prop="username">
+              <el-input placeholder="请输入用户名" v-model="loginForm.username">
+                <!-- <template slot="prepend">账号：</template> -->
               </el-input>
-          </el-form-item>
-          <el-form-item prop="password">
-            <!-- <el-input
+            </el-form-item>
+            <el-form-item prop="password">
+              <!-- <el-input
               v-model="loginForm.password"
               type="password"
               >
               <template slot="prepend">密码：</template>
               </el-input> -->
-              <el-input placeholder="请输入密码" v-model="loginForm.password" show-password></el-input>
-          </el-form-item>
-          <el-link class="login_reg" @click="regDialogVisible = true">立即注册<i class="el-icon-s-promotion el-icon--right"></i> </el-link>
-          <el-form-item class="btns">
-            <el-button type="primary" @click="login" round>登录</el-button>
-            <el-button type="info" @click="resetLoginForm" round>重置</el-button>
-          </el-form-item>
-        </el-form>
+              <el-input
+                placeholder="请输入密码"
+                v-model="loginForm.password"
+                show-password
+              ></el-input>
+            </el-form-item>
+            <el-link class="login_reg" @click="regDialogVisible = true"
+              >立即注册<i class="el-icon-s-promotion el-icon--right"></i>
+            </el-link>
+            <el-form-item class="btns">
+              <el-button type="primary" @click="login" round>登录</el-button>
+              <el-button type="info" @click="resetLoginForm" round
+                >重置</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </div>
       </div>
     </div>
-  </div>
-  <!-- 注册 -->
-  <el-dialog
-  title="注册"
-  :visible.sync="regDialogVisible"
-  width="50%"
-  center>
-  <el-form :model="regForm" status-icon :rules="regFormRules" ref="regFormRef" label-width="100px" class="reg_form">
-  <el-form-item label="账号" prop="reg_username" class="is-required">
-    <el-input v-model="regForm.reg_username" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="密码" prop="reg_password" class="is-required">
-    <el-input type="password" v-model="regForm.reg_password" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item label="确认密码" prop="reg_checkPassword" class="is-required">
-    <el-input type="password" v-model="regForm.reg_checkPassword" autocomplete="off"></el-input>
-  </el-form-item>
-  <!-- <el-form-item label="年龄" prop="age">
+    <!-- 注册 -->
+    <el-dialog title="注册" :visible.sync="regDialogVisible" width="50%" center>
+      <el-form
+        :model="regForm"
+        status-icon
+        :rules="regFormRules"
+        ref="regFormRef"
+        label-width="100px"
+        class="reg_form"
+      >
+        <el-form-item label="账号" prop="reg_username" class="is-required">
+          <el-input
+            v-model="regForm.reg_username"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="reg_password" class="is-required">
+          <el-input
+            type="password"
+            v-model="regForm.reg_password"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="确认密码"
+          prop="reg_checkPassword"
+          class="is-required"
+        >
+          <el-input
+            type="password"
+            v-model="regForm.reg_checkPassword"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <!-- <el-form-item label="年龄" prop="age">
     <el-input v-model.number="ruleForm.age"></el-input>
   </el-form-item> -->
-<el-collapse>
-  <el-collapse-item title="展开更多（非必填选项）" name="1">
-    <el-form-item label="手机号码" prop="reg_phone">
-      <el-input v-model="regForm.reg_checkPassword" autocomplete="off"></el-input>
-    </el-form-item>
-    <el-form-item label="邮箱" prop="reg_email">
-      <el-input v-model="regForm.reg_checkPassword" autocomplete="off"></el-input>
-    </el-form-item>
-  </el-collapse-item>
-</el-collapse>
-</el-form>
-  <span slot="footer" class="dialog-footer">
-    <!-- <el-button @click="regDialogVisible = false">取 消</el-button> -->
-    <el-button type="primary" @click="register">注 册</el-button>
-  </span>
-</el-dialog>
-</div>
+        <el-collapse>
+          <el-collapse-item title="展开更多（非必填选项）" name="1">
+            <el-form-item label="手机号码" prop="reg_phone">
+              <el-input
+                v-model="regForm.reg_checkPassword"
+                autocomplete="off"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" prop="reg_email">
+              <el-input
+                v-model="regForm.reg_checkPassword"
+                autocomplete="off"
+              ></el-input>
+            </el-form-item>
+          </el-collapse-item>
+        </el-collapse>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <!-- <el-button @click="regDialogVisible = false">取 消</el-button> -->
+        <el-button type="primary" @click="register">注 册</el-button>
+      </span>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
 import Qs from "qs";
 export default {
   data() {
-      // 注册两次密码验证
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          if (this.regForm.reg_checkPassword !== '') {
-            this.$refs.regFormRef.validateField('reg_checkPassword');
-          }
-          callback();
+    // 注册两次密码验证
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else {
+        if (this.regForm.reg_checkPassword !== "") {
+          this.$refs.regFormRef.validateField("reg_checkPassword");
         }
-      };
-      var validatePass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.regForm.reg_password) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
-      };
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.regForm.reg_password) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
     return {
       // 注册页面的dialog
       regDialogVisible: false,
@@ -115,7 +144,7 @@ export default {
       regForm: {
         reg_username: "",
         reg_password: "",
-        reg_checkPassword: ""
+        reg_checkPassword: "",
       },
       // 登录表单规则
       loginFormRules: {
@@ -186,19 +215,22 @@ export default {
         // formData.append("password", this.loginForm.password);
         console.log(Qs.stringify(this.loginForm));
         const { data: res } = await this.$http.post(
-          "login",
+          "account/login",
           Qs.stringify(this.loginForm)
         );
+
         if (res.code !== 200) return this.$message.error("账号或密码错误!");
         this.$message.success("登录成功！");
-        window.sessionStorage.setItem('token',res.token)
-        this.$router.push('home')
-        console.log(res.token);
+        
+        this.$store.commit('set_token',res.token);
+        this.$router.push("home");
+        console.log('token');
+        console.log(this.$store.state.token);
       });
     },
     register() {
-      this.regDialogVisible = false
-        this.$refs.regFormRef.validate(async (valid) => {
+      this.regDialogVisible = false;
+      this.$refs.regFormRef.validate(async (valid) => {
         if (!valid) return;
         console.log("reg_log");
         console.log(this.regForm.reg_username);
@@ -238,57 +270,55 @@ export default {
   transform: translate(-50%, -50%);
 }
 .login_pic {
-    width: 430px;
-    height: 500px;
-    float: left;
+  width: 430px;
+  height: 500px;
+  float: left;
 }
 .login_pic img {
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
-    width: 100%;
-    height: 100%;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  width: 100%;
+  height: 100%;
 }
 .login_p {
-    margin-top: 120px;
-    margin-left: 100px;
-    font-size: 20px;
+  margin-top: 120px;
+  margin-left: 100px;
+  font-size: 20px;
 }
 .login_box {
-    border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px;
-    float: left;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  float: left;
   width: 525.8px;
   height: 500px;
   background-color: rgb(255, 255, 255);
-
 }
 .login_form {
-    margin-left: 100px;
-    margin-right: 100px;
+  margin-left: 100px;
+  margin-right: 100px;
 }
 .login_reg {
-    float: right;
+  float: right;
 }
 .btns {
-    margin-top: 60px;
+  margin-top: 60px;
 }
 .el-button--primary {
- margin-left: 40px;
- width: 120px;
- background-color: #9479CE;
- border-color: #9479CE;
+  margin-left: 40px;
+  width: 120px;
+  background-color: #9479ce;
+  border-color: #9479ce;
 }
 .el-button--primary:hover {
- background-color: #8a68d3;
- border-color: #8a68d3;
+  background-color: #8a68d3;
+  border-color: #8a68d3;
 }
-.el-button--primary:focus{
- background-color: #8a68d3;
- border-color: #8a68d3;
+.el-button--primary:focus {
+  background-color: #8a68d3;
+  border-color: #8a68d3;
 }
 .reg_form {
   width: 70%;
   margin: 0 auto;
 }
-
 </style>

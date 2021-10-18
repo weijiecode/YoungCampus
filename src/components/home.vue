@@ -130,6 +130,9 @@
 
 <script>
 export default {
+  created() {
+    this.getNowtext()
+  },
   data() {
     return {
       nowtext:[],
@@ -137,7 +140,8 @@ export default {
   },
   methods: {
     loginout() {
-      window.sessionStorage.clear();
+      // window.sessionStorage.clear();
+      this.$store.commit('del_token');
       this.$router.push("/login");
       this.$notify({
           title: '警告',
@@ -145,6 +149,12 @@ export default {
           type: 'warning'
         });
     },
+    // 即刻
+    async getNowtext(){
+      const {data:res} = await this.$http.get('content/nowtext')
+      console.log('即刻')
+      console.log(res)
+    }
   },
 };
 </script>
