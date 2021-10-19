@@ -97,7 +97,7 @@
         </el-dropdown>
       </el-col> -->
       <div class="search">
-        <el-input size="medium" placeholder="请输入搜索内容" class="input-with-select">
+        <el-input v-model="search" size="medium" placeholder="请输入搜索内容" class="input-with-select">
 
         </el-input>
       </div>
@@ -117,26 +117,36 @@
       <!-- <el-button type="primary" @click="loginout">退出账号</el-button> -->
     </div>
         <div class="nowtext">
-          <el-input
-            v-model="nowtext"
-            clearable>
+          <el-input v-model="nowtext" clearable>
              <template slot="prepend">即刻</template>
              <el-button slot="append" icon="el-icon-loading"></el-button>
           </el-input>
         </div>
-
+        <button @click="getnowtext_noce()">111</button>
   </div>
 </template>
 
 <script>
+import Qs from 'qs'
 export default {
   created() {
     this.getNowtext()
   },
   data() {
     return {
-      nowtext:[],
+      arrynowtext: [],
+      nowtext: '',
+      search: '',
+      test: 'test',
+      time_i:0
     };
+  },
+  components: {Qs},
+  mounted() {
+    this.timer = setInterval(this.getnowtext_noce,1500)
+  },
+  beforeDestroy() {
+    clearInterval(this.getnowtext_noce)
   },
   methods: {
     loginout() {
@@ -151,9 +161,23 @@ export default {
     },
     // 即刻
     async getNowtext(){
+      console.log('即刻1')
       const {data:res} = await this.$http.get('content/nowtext')
       console.log('即刻')
-      console.log(res)
+      
+      this.arrynowtext = res.data
+      console.log(this.arrynowtext)
+      //console.log(Qs.stringify(this.nowtext))
+    },
+    getnowtext_noce(){
+      if(this.arrynowtext.length-1==this.time_i){
+        this.time_i=0
+      }else {
+        this.time_i++
+      }
+      this.nowtext = this.arrynowtext[this.time_i].content
+      //console.log(this.nowtext)
+
     }
   },
 };
@@ -222,6 +246,10 @@ export default {
   border: 1px solid #8a68d3;
   border-left: 0px;
   border-right: 0px;
+  text-align: center;
+  font-size: large;
+  font-weight: bolder;
+  cursor: pointer;
 }
 .nowtext {
   margin-top: 25px;
